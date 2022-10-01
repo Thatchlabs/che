@@ -1,12 +1,12 @@
+'''
+First attempt  to extract datafrom Spotify API
+
+'''
 import spotipy
 import time
 from spotipy.oauth2 import SpotifyClientCredentials
+sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="cf442a032ca744868068d88ddd70ba5b", client_secret="e5c291939f094a58a9dbde370026ed2b")) #you can use mine for now
 
-sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id="cf442a032ca744868068d88ddd70ba5b",
-                                                           client_secret="e5c291939f094a58a9dbde370026ed2b"))
-
-
-# shows artist info for a URN or URL
 #all spotify contries 
 country_codes = [
         "AD",
@@ -69,13 +69,14 @@ country_codes = [
         "GB",
         "US",
         "UY"]
-x = 0
-ids = []
-day_total = 0
+#Declaring Variables
+x = 0 #
+ids = [] # list of track IDs
+day_total = 0 #running total of tracks released
 date = input(("Release Date: "))
 filename = date + '.txt'
 result = 'Result'+ date +'.txt'
-#Open file
+#Open file  (use if it already exists)
 try:
     db = open(filename,'r').readlines()
 except:
@@ -86,10 +87,10 @@ for line in db:
     fields= line.split('%')
     ids.append(fields[0]) 
     day_total = day_total + int(fields[2].strip())
-
 if x == 1:
     opener.close()
 
+#Search regions
 for c in country_codes:
     try:
         response = sp.new_releases(c)
@@ -112,13 +113,11 @@ for c in country_codes:
     except: 
         print( c , 'failed')
 
-
-
-
     '''
         if albums['next']:
             response = sp.next(albums)
         else:
             response = None
-        time.sleep(1)'''
+        time.sleep(1)
+    '''
 
